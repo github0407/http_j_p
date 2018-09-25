@@ -18,8 +18,18 @@ public class client {
             DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
             DataInputStream din = new DataInputStream(socket.getInputStream());
 
-            dout.writeUTF("开始发送用户数据-------->>>>>>>>>>>>>");
+            dout.writeUTF("发自客户端!!!!!!!!!!!!!!!!!!!!!!!!!!");
             dout.flush();
+
+            String income_message;
+            if((income_message = din.readUTF()) != null) {
+                System.out.println("收到服务端信息 ： "+income_message);
+            }else{
+                System.out.println("未收到来自服务端的验证消息，连接断开！");
+                dout.close();
+                din.close();
+                socket.close();
+            }
 
             try {
                 InputStreamReader isr = new InputStreamReader(new FileInputStream("D:\\模型\\http\\test_data.csv"), "GB2312");
@@ -57,24 +67,32 @@ public class client {
                 e.printStackTrace();
             }
 
-            dout.writeUTF("我准备发送数据了！");
-            dout.flush();
+//            dout.writeUTF("我准备开始发送数据了！");
+//            dout.flush();
 
-            String inputLine;
+            String sent_message;
+            String sent_valid_message = "TRUE";
             int i = 0;
-            while ((inputLine = din.readUTF()) != null) {
-                if(inputLine == "TRUE"){
-                    System.out.println("接受到确认信息： "+inputLine);
-                }
+            while ((income_message = din.readUTF()) != null) {
 
-                dout.writeUTF("{cust_id:a1234,name:'小强',age:23}");
+                System.out.println("接受到新信息： "+income_message);
+
+                sent_message = ("{cust_id:a1234,name:'小强',age:23}"+i).toString();
+                dout.writeUTF(sent_message);
                 dout.flush();
+                System.out.println("发送了新数据："+sent_message);
+
+                if(i>10){
+                    sent_valid_message = "FALSE";
+                    dout.writeUTF(sent_valid_message);
+                    dout.flush();
+                }else{
+                    sent_valid_message = "TRUE";
+                    dout.writeUTF(sent_valid_message);
+                    dout.flush();
+                }
                 i++;
-                if (inputLine.equals("Bye"))
-                    break;
             }
-//            String str = din.readUTF();//in.readLine();
-//            System.out.println("Message"+str);
 
             dout.flush();
             dout.close();
