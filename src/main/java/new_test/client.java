@@ -5,8 +5,6 @@ import java.net.*;
 import java.lang.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class client {
 
@@ -32,7 +30,7 @@ public class client {
             }
 
             try {
-                InputStreamReader isr = new InputStreamReader(new FileInputStream("D:\\模型\\http\\test_data.csv"), "GB2312");
+                InputStreamReader isr = new InputStreamReader(new FileInputStream("D:\\模型\\http\\test_data1.csv"), "GB2312");
                 BufferedReader reader = new BufferedReader(isr);
                 String header = reader.readLine();//第一行信息，为标题信息，不用，如果需要，注释掉
                 System.out.println("-----------------header---------------------");
@@ -49,22 +47,22 @@ public class client {
 
                     Map featureNames = new HashMap();
 
-                    featureNames.put("cust_id：",last_[0]);
-                    featureNames.put("TX_score_WOE：",Float.valueOf(last_[1].trim()).floatValue());
-                    featureNames.put("TD_Fraud_score_WOE：",Float.valueOf(last_[2].trim()).floatValue());
-                    featureNames.put("C_city_x_encoding_WOE：",Float.valueOf(last_[3].trim()).floatValue());
-                    featureNames.put("GEO_SCORE_geo104_WOE：",Float.valueOf(last_[4].trim()).floatValue());
-                    featureNames.put("huomou_score_WOE：",Float.valueOf(last_[5].trim()).floatValue());
-                    featureNames.put("sex_age_encoding_WOE：",Float.valueOf(last_[6].trim()).floatValue());
-                    featureNames.put("match_score_mz_WOE：",Float.valueOf(last_[7].trim()).floatValue());
-                    featureNames.put("auth_contactnum_ratio_30d_mz_WOE：",Float.valueOf(last_[8].trim()).floatValue());
-                    featureNames.put("CDZC003_geo104_WOE：",Float.valueOf(last_[9].trim()).floatValue());
-                    featureNames.put("brand_x_encoding_WOE：",Float.valueOf(last_[10].trim()).floatValue());
-                    featureNames.put("C_app_date_WOE：",Float.valueOf(last_[11].trim()).floatValue());
-                    featureNames.put("idcard_name_in_gray_mz_WOE：",Float.valueOf(last_[12].trim()).floatValue());
-                    featureNames.put("intercept：",Float.valueOf(last_[13].trim()).floatValue());
+                    featureNames.put("customer_id",last_[0]);
+                    featureNames.put("age",last_[1].isEmpty()?"NAN":Float.valueOf(last_[1].trim()).floatValue());
+                    featureNames.put("sex",last_[2].isEmpty()?"NAN":Float.valueOf(last_[2].trim()).floatValue());
+                    featureNames.put("gps_city",last_[3].isEmpty()?"NAN":last_[3].trim().toString());
+                    featureNames.put("device_brand",last_[4].isEmpty()?"NAN":last_[4].trim().toString());
+                    featureNames.put("geo_score_geo104",last_[5].isEmpty()?"NAN":Float.valueOf(last_[5].trim()).floatValue());
+                    featureNames.put("cdzc003_geo104",last_[6].isEmpty()?"NAN":Float.valueOf(last_[6].trim()).floatValue());
+                    featureNames.put("apply_time",last_[7].isEmpty()?"NAN":Float.valueOf(last_[7].trim()).floatValue());
+                    featureNames.put("auth_contactnum_ratio_30d_mz",last_[8].isEmpty()?"NAN":Float.valueOf(last_[8].trim()).floatValue());
+                    featureNames.put("mobile_match_score",last_[9].isEmpty()?"NAN":Float.valueOf(last_[9].trim()).floatValue());
+                    featureNames.put("in_gray",last_[10].isEmpty()?"NAN":last_[10].trim().toString());
+                    featureNames.put("huo_mou_score",last_[11].isEmpty()?"NAN":Float.valueOf(last_[11].trim()).floatValue());
+                    featureNames.put("tx_score",last_[12].isEmpty()?"NAN":Float.valueOf(last_[12].trim()).floatValue());
+                    featureNames.put("td_fraud_score",last_[13].isEmpty()?"NAN":Float.valueOf(last_[13].trim()).floatValue());
 
-                    System.out.println(featureNames.toString());
+//                    System.out.println(featureNames.toString());
 
                     System.out.println("接受到新信息： "+ income_message);
 
@@ -84,6 +82,9 @@ public class client {
                     }
 
                     }
+//                 income_message = din.readUTF();
+//                 System.out.println("接受到新信息：----- "+ income_message);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
