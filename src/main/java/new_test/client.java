@@ -11,7 +11,7 @@ public class client {
     public static void main(String[] args) {
 
         try {
-            Socket socket = new Socket("localhost", 2004);
+            Socket socket = new Socket("192.168.2.153", 2004);
 
             DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
             DataInputStream din = new DataInputStream(socket.getInputStream());
